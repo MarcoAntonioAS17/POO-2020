@@ -3,8 +3,18 @@ package mx.uv.fiee.iinf.poo;
 public class Main {
 
     public static void main (String [] args) {
-        Circle c = new Circle (5, 5, 10);
-        c.paint ();
+        Circle original = new Circle (5, 5, 10);
+        original.paint ();
+
+        try {
+            Circle copia = (Circle) original.clone();
+
+            original.calculateArea ();
+            copia.calculateArea ();
+        } catch (CloneNotSupportedException ex) {
+            ex.printStackTrace ();
+        }
+
     }
 
 }
