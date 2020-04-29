@@ -1,5 +1,7 @@
 package mx.uv.fiee.iinf.poo;
 
+import java.util.Objects;
+
 /**
  * Representa un objeto circulo que implementa las interfaces Draw y Shape
  * por lo tanto, está oblidada a implementar los métodos que estas definen
@@ -11,10 +13,15 @@ package mx.uv.fiee.iinf.poo;
  * debido a que debe acceder directamente a la memoria para copiar byte a byte
  * al objeto en cuestión.
  *
+ * Implementa la interfaz Comparable, dándole la capacidad al objeto creado
+ * a partir de esta clase, de compararse contra otro objeto igual de forma que se
+ * pueda saber si se es mayor, menor o iguales.
+ *
  */
-class Circle implements Draw, Shape, Cloneable {
+class Circle implements Draw, Shape, Cloneable, Comparable<Circle> {
     int x, y;
     int radio;
+    double area;
 
     public Circle (int x, int y, int radio) {
         this.x = x;
@@ -41,8 +48,35 @@ class Circle implements Draw, Shape, Cloneable {
      */
     @Override
     public void calculateArea () {
-        double area = Math.PI * Math.sqrt (radio);
-        System.out.println ("El área del círculo es " + area);
+        this.area = Math.PI * Math.sqrt (radio);
+        System.out.println ("El área del círculo es " + this.area);
+    }
+
+    /**
+     * Reemplaza al método equals de la clase base, lo que nos permite ahora
+     * comparar directamente las áreas para definir la igualdad.
+     *
+     * @param obj objeto contra el cuál se compara a este objeto.
+     * @return verdadero si ambos objetos presetan la misma área, falso en caso contrario
+     */
+    @Override
+    public boolean equals (Object obj) {
+        if (obj instanceof Circle) {
+            return this.area == ((Circle) obj).area;
+        }
+
+        return false;
+    }
+
+    /**
+     * Reemplaza al método hashcode de la clase base, generando un identificador único
+     * para este objeto, basado en los valores de sus campos
+     *
+     * @return entero representando el identificador obtenido del cálculo hash
+     */
+    @Override
+    public int hashCode () {
+        return Objects.hash (x, y, radio, area);
     }
 
     /**
@@ -53,5 +87,21 @@ class Circle implements Draw, Shape, Cloneable {
     @Override
     protected Object clone () throws CloneNotSupportedException {
         return super.clone ();
+    }
+
+    /**
+     * Compara el objeto actual contra otro similar. Podría pensarse que este método realiza
+     * una función similar al método equals, pero la naturaleza de compareTo es ordenamiento,
+     * mientras que equals busca igualdad.
+     *
+     * @param o objeto contra el cuál compararse
+     * @return valor entero representando si el objeto actual es mayor (>0), si es menor (<0)
+     * o sin son iguales (0), tomando como referencia el área que los objetos en cuestión ocupan.
+     */
+    @Override
+    public int compareTo (Circle o) {
+        if (this.area > o.area) return 1;
+        if (this.area < o.area) return -1;
+        return 0;
     }
 }
