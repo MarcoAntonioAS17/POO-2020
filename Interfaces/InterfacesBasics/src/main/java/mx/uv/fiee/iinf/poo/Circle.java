@@ -104,4 +104,8 @@ class Circle implements Draw, Shape, Cloneable, Comparable<Circle> {
         if (this.area < o.area) return -1;
         return 0;
     }
+
+    public String toString(){
+        return String.format("Circulo con centro en el punto (%d, %d), radio de %d con area de "+this.area,this.x,this.y,this.radio);
+    }
 }

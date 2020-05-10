@@ -106,4 +106,8 @@ class Rectangle implements Draw, Shape, Cloneable,Comparable<Rectangle> {
         if (this.area < o.area) return -1;
         return 0;
     }
+
+    public String toString(){
+        return String.format("Rectangulo con vertices en los puntos (%d, %d) y (%d, %d) con area de "+this.area,this.x1,this.y1,this.x2,this.y2);
+    }
 }
