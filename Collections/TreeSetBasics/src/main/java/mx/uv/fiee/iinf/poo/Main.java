@@ -6,101 +6,95 @@ import java.util.TreeSet;
 
 public class Main {
 
-    public static void main(String[] args) {
-//        TreeSet<Employee> employees = new TreeSet<> (/*new MyComparator ()*/);
-//
-//        employees.add (new Employee("Lea", 3000.0));
-//        employees.add(new Employee("Skywalker", 6000.0));
-//        employees.add(new Employee("Solo", 2000.0));
-//        employees.add(new Employee("Vader", 2400.0));
-//
-//        for (Employee e: employees) {
-//            System.out.println (e);
-//        }
+    public static void main (String [] args) {
+        //
+        // Estructura TreeSet almacenando tipos String
+        // se pasa como parámetro del constructor un objeto de tipo Comparator
+        // que indica a la estructura que los elementos deben ser almacenados
+        // en orden inverso al ordenamiento natural del tipo de dato
+        //
+        TreeSet<String> treeStr = new TreeSet<> (Comparator.reverseOrder ());
+        treeStr.add ("r2d2");
+        treeStr.add ("c3po");
+        treeStr.add ("bb8");
+        treeStr.add ("deathstar");
+        treeStr.add ("millenialfalcon");
 
-        //usando una expresión lambda
-        TreeSet<String> treeString = new TreeSet <>((s1, s2) -> {
-            return s1.compareTo (s2);
-        });
-
-        treeString.add ("Anakin");
-        treeString.add ("r2d2");
-        treeString.add ("c3po");
-        treeString.add ("bb8");
-
-        for (String s: treeString) {
+        System.out.println ("***************TreeSet String, orden de almacenamiento inverso, recorrido normal*****************");
+        // recorremos la estructura y obtener los valores almacenados
+        for (String s: treeStr) {
             System.out.println (s);
         }
 
-        for (Iterator<String> i = treeString.iterator (); i.hasNext ();) {
-            System.out.println (i.next ());
+        //
+        // Estructura TreeSet almacenando tipos Employee
+        // Si no le indicamos parámetros mediante el constructor la estructura
+        // almacena los elementos respetando el orden natural definido por el
+        // tipo de dato
+        //
+        TreeSet<Employee> treeEmp = new TreeSet<> ();
+        treeEmp.add (new Employee ("Lea", 20000.0));
+        treeEmp.add (new Employee ("Luke", 30000.0));
+        treeEmp.add (new Employee ("Anakin", 25000.0));
+        treeEmp.add (new Employee ("Han", 15000.0));
+
+        System.out.println ("***************TreeSet Employee, orden de almacenamiento natural (basado en payment), recorrido inverso*****************");
+        //
+        // una vez almacenados y ordenados los elementos podemos recorrer la estructura
+        // de forma inversa, mediante el objeto iterador decendente que define el
+        // objeto TreeMap
+        //
+        Iterator<Employee> iterator = treeEmp.descendingIterator ();
+        while (iterator.hasNext ()) {
+            System.out.println (iterator.next ());
         }
 
-//        TreeSet<String> t = new TreeSet<> ();
-//
-//        t.add ("one");
-//        t.add ("two");
-//        t.add ("three");
-//        t.add ("four");
-//
-//        for (String e : t) {
-//            System.out.println( e);
-//        }
-//
-//
-//        System.out.printf ("\nReverting order...\n");
-//
-//        for (Iterator<String> i = t.descendingIterator (); i.hasNext ();) {
-//            System.out.println (i.next ());
-//        }
+        //
+        // Estructura TreeSet almacenando tipos Employee
+        // En este caso se está modificando la forma de comparación definida
+        // en el tipo de dato, mediante un objeto que implementa la interfaz Comparator
+        //
+        TreeSet<Employee> treeMasters = new TreeSet<>(new Comparator<Employee>() {
+            /***
+             * Este método reemplaza la forma de comparación definida en el tipo de dato
+             *
+             * Como puede apreciarse, los valores devueltos son contrarios a los definidos
+             * en el método CompareTo definido en la clase Employee, para conseguir que los
+             * elementos sean almacenados de forma inversa al orden natural.
+             *
+             * @param o1 objeto Employee
+             * @param o2 objeto Employee
+             * @return si el campo payment del objeto 1 es mayor que el campos payment del segundo,
+             * devuelve un valor negativo, si es menor, devuelve un valor positivo, si son
+             * iguales, devuelve cero.
+             */
+            @Override
+            public int compare(Employee o1, Employee o2) {
+                if (o1.getPayment () > o2.getPayment ()) {
+                    return -1;
+                } else if (o1.getPayment () < o2.getPayment ()) {
+                    return 1;
+                }
+
+                return 0;
+            }
+        });
+
+        treeMasters.add (new Employee ("Yoda", 45000.00));
+        treeMasters.add (new Employee ("Kenobi", 43000.00));
+        treeMasters.add (new Employee ("Windu", 44000.00));
+        treeMasters.add (new Employee ("Skywaker", 47000.00));
+
+        System.out.println ("***************TreeSet Employee, orden de almacenamiento (basado en payment) modificado, recorrido normal*****************");
+
+        // recorremos la estrucura para apreciar como los elementos
+        // están almacenados en base al órden definido por el objeto Comparator
+        for (Employee e: treeMasters) {
+            System.out.println (e);
+        }
     }
 
 }
 
 
-class MyComparator implements Comparator<Employee> {
 
-    @Override
-    public int compare (Employee o1, Employee o2) {
-        return o1.getName().compareTo (o2.getName ());
-    }
-
-}
-
-/***
- *
- * @author Gonzalo
- */
-class Employee /*implements Comparable<Employee>*/ {
-
-    private String name;
-    private Double payment;
-
-    public Employee(String name, Double payment) {
-        this.name = name;
-        this.payment = payment;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Double getPayment() {
-        return this.payment;
-    }
-
-//    @Override
-//    public int compareTo (Employee o) {
-//        if (this.payment > o.getPayment ()) {
-//            return 1;
-//        } else if (o.getPayment () > this.payment) {
-//            return -1;
-//        }
-//
-//        return 0;
-//    }
-
-    public String toString () {
-        return this.name + " has a payment of " + this.payment;
-    }
-}
