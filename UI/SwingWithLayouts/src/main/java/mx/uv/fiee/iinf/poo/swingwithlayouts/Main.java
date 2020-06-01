@@ -40,7 +40,7 @@ public class Main {
         
         JButton btnBorder = new JButton ("BorderLayout");
         btnBorder.setPreferredSize (new Dimension (200, 80));
-        btnBorder.addActionListener (e -> { new Border (); });
+        btnBorder.addActionListener (e -> {  new Border (); });
         
         JButton btnGrid = new JButton ("GridLayout");
         btnGrid.addActionListener (e -> { new Grid (); });
