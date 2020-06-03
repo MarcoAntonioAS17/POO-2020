@@ -209,7 +209,7 @@ class Box extends JFrame {
         pnlCenter.setBorder (BorderFactory.createTitledBorder ("CENTER"));
         pnlRight.setBorder (BorderFactory.createTitledBorder ("RIGHT"));
         
-        // asigna un boxlayout a cada panel utilizando alineamiento vertical
+        // asigna un panel a cada boxlayout utilizando alineamiento vertical
         BoxLayout boxLayoutLeft = new BoxLayout (pnlLeft, BoxLayout.Y_AXIS);
         BoxLayout boxLayoutCenter = new BoxLayout (pnlCenter, BoxLayout.Y_AXIS);
         BoxLayout boxLayoutRight = new BoxLayout (pnlRight, BoxLayout.Y_AXIS);
