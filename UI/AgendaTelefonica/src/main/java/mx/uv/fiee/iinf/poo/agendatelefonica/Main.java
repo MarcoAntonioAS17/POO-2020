@@ -3,12 +3,13 @@ package mx.uv.fiee.iinf.poo.agendatelefonica;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Clase cliente
@@ -25,9 +26,9 @@ public class Main {
  * Clase que representa nuestra interfaz para la agenda telefónica
  */
 class Agenda extends JFrame {
-    private JTextField tfName, tfPhone; // campos de datos
+    private JTextField tfName; // campos de datos
     private JButton btnAdd, btnDelete; // acciones
-
+    private MyTextField tfPhone; //JTextfield personalizado
     // JTable nos sirve para almacenar el listado de datos que deseamos mostrar al usuario
     private JTable table;
     private DefaultTableModel model; // JTable utiliza un modelo para mantener referencia a los datos
@@ -36,7 +37,8 @@ class Agenda extends JFrame {
         super ("Agenda Telefónica");
 
         tfName = new JTextField (); // instanciamos al JTextField nombre
-        tfPhone = new JTextField (); // instanciamos al JTextField teléfono
+        tfPhone = new MyTextField (); // instanciamos al JTextField teléfono
+        tfPhone.setToolTipText ("Format: (###) #######"); // establecemos un mensaje de ayuda al usuario
 
         btnAdd = new JButton ("Add"); // instanciamos al botón ADD
         // manejador del evento clic del botón ADD
