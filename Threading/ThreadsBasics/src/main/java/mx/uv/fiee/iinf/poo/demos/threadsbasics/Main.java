@@ -18,7 +18,6 @@ import java.util.concurrent.Callable;
  *
  */
 public class Main {
-    //private static int sum; // variable acumuladora
 
     public static void main (String [] args) {
         /*****************************Creación de objetos de tipo Runnable************************/
@@ -81,7 +80,6 @@ public class Main {
                 System.out.println ("Inside Thread 1 Name: " + Thread.currentThread ().getName () + " -> "+ i);
                 try {
                     Thread.sleep (1000);
-                    //increment ();
                 } catch (InterruptedException in) { in.printStackTrace (); }
             }
         });
@@ -101,12 +99,12 @@ public class Main {
 
         System.out.println ("Starting execution...");
 
-        // Runnables
-        //myRunna1.run ();
-        //myRunna2.run ();
-        //foo.run ();
+        // Runnables, ejecución sincrona
+        myRunna1.run ();
+        myRunna2.run ();
+        foo.run ();
 
-        // Threads
+        // Threads, ejecución asíncrona
         myThread1.start ();
         myThread2.start ();
         bar.start ();
@@ -124,59 +122,45 @@ public class Main {
         System.out.println ("Terminated...");
     }
 
-    /**
-     * Método sincronizado que solo permite el acceso de un hilo a la vez,
-     * evitando que mas de uno modifique la variable mientras otro lo está leyendo.
-     */
-    /*static synchronized void increment () {
-        sum++;
-    }*/
-
-
-    /**
-     * Clase que implementa la interfaz Runnable, por lo que se está obligado a definir
-     * al método abstracto "run"
-     *
-     */
-    static class Foo implements Runnable {
-        @Override
-        public void run () {
-            for (int i = 0; i < 5; i++) {
-                System.out.println ("Inside Thread Foo Name: " + Thread.currentThread ().getName () + " -> " + i);
-                try {
-                    Thread.sleep (1000);
-                    //increment ();
-                } catch (InterruptedException ex) { ex.printStackTrace (); }
-            }
-        }
-    }
-
-    /**
-     * Clase que extiende la clase Thread.
-     *
-     * La clase Thread implementa a la interfaz Runnable, por tanto el código que deseamos que sea ejecutado
-     * debe ser colocado en el método "run" definido en dicha interfaz, y que podemos sobreescribir.
-     *
-     */
-    static class Bar extends Thread {
-        @Override
-        public void run () {
-            super.run ();
-
-            for (int i = 0; i < 5; i++) {
-                System.out.println("Inside Thread Bar Name: " + this.getName () + " -> " + i);
-                try {
-                    Thread.sleep(1000);
-                    //increment ();
-                } catch (InterruptedException in) { in.printStackTrace (); }
-            }
-        }
-    }
-
 }
 
 
+/**
+ * Clase que implementa la interfaz Runnable, por lo que se está obligado a definir
+ * al método abstracto "run"
+ *
+ */
+class Foo implements Runnable {
+    @Override
+    public void run () {
+        for (int i = 0; i < 5; i++) {
+            System.out.println ("Inside Thread Foo Name: " + Thread.currentThread ().getName () + " -> " + i);
+            try {
+                Thread.sleep (1000);
+            } catch (InterruptedException ex) { ex.printStackTrace (); }
+        }
+    }
+}
 
 
+/**
+ * Clase que extiende la clase Thread.
+ *
+ * La clase Thread implementa a la interfaz Runnable, por tanto el código que deseamos que sea ejecutado
+ * debe ser colocado en el método "run" definido en dicha interfaz, y que podemos sobreescribir.
+ *
+ */
+class Bar extends Thread {
+    @Override
+    public void run () {
+        super.run ();
 
+        for (int i = 0; i < 5; i++) {
+            System.out.println("Inside Thread Bar Name: " + this.getName () + " -> " + i);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException in) { in.printStackTrace (); }
+        }
+    }
+}
 
