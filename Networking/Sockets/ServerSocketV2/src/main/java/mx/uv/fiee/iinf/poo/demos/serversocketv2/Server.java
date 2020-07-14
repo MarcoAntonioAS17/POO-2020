@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * En esta versión del servidor se permite una conexión uno a uno
@@ -26,63 +28,74 @@ import java.nio.charset.StandardCharsets;
  */
 public class Server {
     public static int PORT = 9888;
-    
-    public static void main(String[] args) {
-        try {
-            // creamos al socket tipo servidor usando el puerto definido
-            ServerSocket server = new ServerSocket (PORT);
-            // esperamos a que se realice una conexión, bloqueando el flujo de la aplicación
-            Socket socket = server.accept ();
 
-            // creamos los objetos DataInputStream y DataOutputStream, usando el flujo de entrada
-            // y salida del socket
-            DataInputStream din = new DataInputStream (socket.getInputStream ());
-            DataOutputStream dos = new DataOutputStream (socket.getOutputStream ());
+    static Runnable nuevo_cliente(Socket sock){
 
-            // la entrada del usuario se referencía de la entrada por consola
-            // Utilizamos un objeto InputStreamReader para leer los bytes
-            // entrantes y los convierta a su representación unicode
-            InputStreamReader in = new InputStreamReader (System.in, StandardCharsets.UTF_8);
+        return () -> {
+            try {
+                Socket socket = new Socket();
+                socket=sock;
+                System.out.println("Añadiendo conexión");
+                System.out.println("Conexión con: " + socket.toString() + " Aceptada");
 
-            // La clase Reader lee byte a byte e interpreta cada byte de acuerdo a la codificación establecidad,
-            // pero lo que necesitamos es leer bloques (líneas) completas y se almacen en memoria
-            // para ser enviadas, para ellos utilizamos un BufferedReader
-            BufferedReader buff = new BufferedReader (in);
+                DataInputStream din = null;
+                din = new DataInputStream(socket.getInputStream());
 
-            // variables de control
-            // line1, lee el mensaje remoto entrante
-            // line2, almacena la entrada del usuario
-            String line1 = "", line2 = "";
+                DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+                InputStreamReader in = new InputStreamReader(System.in, StandardCharsets.UTF_8);
 
-            /**
-             * Para realizar lectura y envíos recurrentes, utilizamos un ciclo.
-             *
-             * La aplicación se detiene cuando el usuario teclea "stop"
-             */
-            while (!line1.equals ("stop")) {
-                // lee los bytes entrantes de la conexión como caracteres unicode,
-                // el flujo de la aplicación se detiene esperando la llegada de datos
-                line1 = din.readUTF ();
-                System.out.println ("Client says " + line1);
-                
-                System.out.print ("Response: ");
-                // lee la entrada del usuario, el flujo de la aplicación se detiene
-                line2 = buff.readLine ();
+                BufferedReader buff = new BufferedReader(in);
 
-                // la entrada del usuario es codificada a caracteres unicode,
-                // y coloca en el buffer de salida de la conexión
-                dos.writeUTF (line2);
-                dos.flush (); // envía los bytes pendientes de salida
+                String line1 = "", line2 = "";
+
+                while (!line1.equals("stop")) {
+
+                    line1 = din.readUTF();
+                    System.out.println("Cliente " + socket.toString() + " dice: " + line1);
+
+                    System.out.print("Respuesta al cliente: ");
+
+                    line2 = buff.readLine();
+
+
+                    dos.writeUTF(line2);
+                    dos.flush();
+
+                }
+
+                din.close();
+                dos.close();
+                System.out.println("Cerrando conexión: "+socket.toString()+"... Hasta pronto.");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            // cerramos los flujos de entrada y salida
-            din.close ();
-            dos.close ();
-            server.close (); // y finalmente la conexión
+        };
+
+    }
+
+    public static void main(String[] args) {
+
+
+        try {
+            boolean bandera = true;
+            ServerSocket server = new ServerSocket (PORT);
+
+            ExecutorService service = Executors.newCachedThreadPool();
+
+            System.out.println("Esperando conexiones");
+
+            while(true){
+                Socket socket = server.accept();
+                service.submit(nuevo_cliente(socket));
+            }
+
         } catch (IOException ex) {
             ex.printStackTrace ();
         }
         
     }
+
+
     
 }

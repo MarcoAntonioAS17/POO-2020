@@ -7,28 +7,28 @@ public class SyncMethod {
         Thread t1 = new Thread (() -> {
            for (int i = 0; i < 5; i++) {
                increment ();
-               System.out.println ("Thread one -> " + acum);
+               System.out.println (i+" Thread one -> " + acum);
            } 
         });
         
         Thread t2 = new Thread (() -> {
             for (int i = 0; i < 5; i++) {
                 increment ();
-                System.out.println ("Thread two -> " + acum);
+                System.out.println (i+" Thread two -> " + acum);
             } 
         });
         
         Thread t3 = new Thread (() -> {
            for (int i = 0; i < 5; i++) {
                increment ();
-               System.out.println ("Thread three -> " + acum);
+               System.out.println (i +" Thread three -> " + acum);
            } 
         });        
         
         Thread t4 = new Thread (() -> {
            for (int i = 0; i < 5; i++) {
                increment ();
-               System.out.println ("Thread four -> " + acum);
+               System.out.println (i+" Thread four -> " + acum);
            } 
         });        
         

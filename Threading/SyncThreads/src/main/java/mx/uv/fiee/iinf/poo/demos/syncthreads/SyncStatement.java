@@ -9,9 +9,9 @@ public class SyncStatement {
         
         Thread t1 = new Thread (() -> {
            for (int i = 0; i < 5;) {
-               //System.out.println ("Thread ONE trying to adquire lock...");
+               System.out.println ("Thread ONE trying to adquire lock...");
                synchronized (mySyncObj) {
-                   //System.out.println ("Lock adquired by Thread ONE...");
+                   System.out.println ("Lock adquired by Thread ONE...");
                    System.out.println("Thread one -> " + ++acum);
                    
                    try {
@@ -25,9 +25,9 @@ public class SyncStatement {
         
         Thread t2 = new Thread (() -> {
             for (int i = 0; i < 5;) {
-                //System.out.println ("Thread TWO Trying to adquire lock...");
+                System.out.println ("Thread TWO Trying to adquire lock...");
                 synchronized (mySyncObj) {
-                    //System.out.println ("Lock adquired by Thread TWO...");
+                    System.out.println ("Lock adquired by Thread TWO...");
                     System.out.println ("Thread two -> " + ++acum);
                     
                     try {
@@ -41,9 +41,9 @@ public class SyncStatement {
         
         Thread t3 = new Thread (() -> {
            for (int i = 0; i < 5;) {
-                //System.out.println ("Thread THREE trying to adquire lock...");
+                System.out.println ("Thread THREE trying to adquire lock...");
                synchronized (mySyncObj) {
-                    //System.out.println ("Lock adquired by Thread THREE...");
+                    System.out.println ("Lock adquired by Thread THREE...");
                     System.out.println ("Thread three -> " + ++acum);
                     
                     try {
@@ -57,9 +57,9 @@ public class SyncStatement {
 
         Thread t4 = new Thread (() -> {
            for (int i = 0; i < 5;) {
-               //System.out.println ("Thread FOUR trying to adquire lock...");
+               System.out.println ("Thread FOUR trying to adquire lock...");
                synchronized (mySyncObj) {
-                    //System.out.println ("Lock adquired by Thread FOUR...");
+                    System.out.println ("Lock adquired by Thread FOUR...");
                     System.out.println ("Thread four -> " + ++acum);
                     
                     try {
